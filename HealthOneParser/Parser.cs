@@ -62,6 +62,8 @@ namespace HealthOneParser
             ParserErrors.Clear();
 
             var line = ReadLine(reader);
+            if (line == null)
+                return Enumerable.Empty<Labo>();
             Labo labo = null;
             do
             {
@@ -99,6 +101,8 @@ namespace HealthOneParser
             ParserErrors.Clear();
 
             var line = ReadLine(reader);
+            if (line == null)
+                return Enumerable.Empty<Report>();
             Report report = null;
             do
             {
