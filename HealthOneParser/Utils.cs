@@ -7,10 +7,10 @@ namespace HealthOneParser
 {
     internal static class Utils
     {
-        internal static V Maybe<T, V>(this T t, Func<T, V> selector)
-        {
-            return t != null ? selector(t) : default(V);
-        }
+        //internal static V Maybe<T, V>(this T t, Func<T, V> selector)
+        //{
+        //    return t != null ? selector(t) : default(V);
+        //}
 
         internal static void AddItem<TKey, TItem>(this IDictionary<TKey, IList<TItem>> dict, TKey key, TItem item)
         {

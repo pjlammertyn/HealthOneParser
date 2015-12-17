@@ -38,10 +38,10 @@ namespace HealthOneParser
 
                 if (recordParts.Count < 3)
                 {
-                    report?.ParserErrors.AddItem(lineNumber, string.Format("Line doesn't consists of more than 2 parst sepeated by '\': {0}", line));
+                    report?.ParserErrors.AddItem(lineNumber, $"Line doesn't consists of more than 2 parst sepeated by '\': {line}");
                     break;
                 }
-       
+
                 if (recordParts.ElementAtOrDefault(0) == "A1")
                 {
                     report = new Report();
@@ -50,7 +50,7 @@ namespace HealthOneParser
 
                 if (report == null)
                 {
-                    report?.ParserErrors.AddItem(lineNumber, string.Format("Administrative block did not start with 'A1\': {0}", line));
+                    report?.ParserErrors.AddItem(lineNumber, $"Administrative block did not start with 'A1\': {line}");
                     break;
                 }
                 else
@@ -89,7 +89,7 @@ namespace HealthOneParser
 
                 if (recordParts.Count < 3)
                 {
-                    labo?.ParserErrors.AddItem(lineNumber, string.Format("Line doesn't consists of more than 2 parst sepeated by '\': {0}", line));
+                    labo?.ParserErrors.AddItem(lineNumber, $"Line doesn't consists of more than 2 parst sepeated by '\': {line}");
                     break;
                 }
 
@@ -101,7 +101,7 @@ namespace HealthOneParser
 
                 if (labo == null)
                 {
-                    labo?.ParserErrors.AddItem(lineNumber, string.Format("Administrative block did not start with 'A1\': {0}", line));
+                    labo?.ParserErrors.AddItem(lineNumber, $"Administrative block did not start with 'A1\': {line}");
                     break;
                 }
                 else
@@ -143,7 +143,7 @@ namespace HealthOneParser
                     ParseL5(recordParts, report, lineNumber);
                     break;
                 default:
-                    report.ParserErrors.AddItem(lineNumber, string.Format("Unknown record descriptor '{0}'", recordParts.ElementAtOrDefault(0)));
+                    report.ParserErrors.AddItem(lineNumber, $"Unknown record descriptor '{recordParts.ElementAtOrDefault(0)}'");
                     break;
             }
         }
@@ -171,7 +171,7 @@ namespace HealthOneParser
                     labo.Results.Add(ParseL1(recordParts, lineNumber, labo.ParserErrors));
                     break;
                 default:
-                    labo.ParserErrors.AddItem(lineNumber, string.Format("Unknown record descriptor '{0}'", recordParts.ElementAtOrDefault(0)));
+                    labo.ParserErrors.AddItem(lineNumber, $"Unknown record descriptor '{recordParts.ElementAtOrDefault(0)}'");
                     break;
             }
         }
@@ -179,7 +179,7 @@ namespace HealthOneParser
         static LaboResult ParseL1(IList<string> recordParts, int lineNumber, IDictionary<int, IList<string>> parserErrors)
         {
             if (recordParts.Count != 9 || !recordParts[8].IsNullOrEmpty())
-                parserErrors.AddItem(lineNumber, string.Format("Expected 8 parts in L1 but got {0} parts: '{1}'", recordParts.Count - 1, string.Join("\\", recordParts)));
+                parserErrors.AddItem(lineNumber, $"Expected 8 parts in L1 but got {recordParts.Count - 1} parts: '{string.Join("\\", recordParts)}'");
 
             var result = new LaboResult();
 
@@ -196,7 +196,7 @@ namespace HealthOneParser
         static void ParseL5(IList<string> recordParts, Report report, int lineNumber)
         {
             if (recordParts.Count != 9 || !recordParts[8].IsNullOrEmpty())
-                report.ParserErrors.AddItem(lineNumber, string.Format("Expected 8 parts in L5 (or L2 or L3) but got {0} parts: '{1}'", recordParts.Count - 1, string.Join("\\", recordParts)));
+                report.ParserErrors.AddItem(lineNumber, $"Expected 8 parts in L5 (or L2 or L3) but got {recordParts.Count - 1} parts: '{string.Join("\\", recordParts)}'");
 
             report.Speciality = recordParts.ElementAtOrDefault(2);
             report.Text = string.Concat(report.Text, recordParts.ElementAtOrDefault(7), Environment.NewLine);
@@ -205,10 +205,10 @@ namespace HealthOneParser
         static void ParseAdministrative1(IList<string> recordParts, IAdministrative adm, int lineNumber)
         {
             if (recordParts.Count != 4 || !recordParts[3].IsNullOrEmpty())
-                adm.ParserErrors.AddItem(lineNumber, string.Format("Expected 3 parts in A1 but got {0} parts: '{1}'", recordParts.Count - 1, string.Join("\\", recordParts)));
+                adm.ParserErrors.AddItem(lineNumber, $"Expected 3 parts in A1 but got {recordParts.Count - 1} parts: '{string.Join("\\", recordParts)}'");
 
             if (recordParts.ElementAtOrDefault(1).IsNullOrEmpty())
-                adm.ParserErrors.AddItem(lineNumber, string.Format("Protocol number is a required field on position 2: '{0}'", string.Join("\\", recordParts)));
+                adm.ParserErrors.AddItem(lineNumber, $"Protocol number is a required field on position 2: '{string.Join("\\", recordParts)}'");
             adm.ProtocolNumber = recordParts.ElementAtOrDefault(1);
             adm.Identification = recordParts.ElementAtOrDefault(2);
         }
@@ -216,40 +216,40 @@ namespace HealthOneParser
         static void ParseAdministrative2(IList<string> recordParts, IAdministrative adm, int lineNumber)
         {
             if (recordParts.Count != 7 || !recordParts[6].IsNullOrEmpty())
-                adm.ParserErrors.AddItem(lineNumber, string.Format("Expected 6 parts in A2 but got {0} parts: '{1}'", recordParts.Count - 1, string.Join("\\", recordParts)));
+                adm.ParserErrors.AddItem(lineNumber, $"Expected 6 parts in A2 but got {recordParts.Count - 1} parts: '{string.Join("\\", recordParts)}'");
 
             if (adm.Patient == null)
                 adm.Patient = new Patient();
             if (recordParts.ElementAtOrDefault(2).IsNullOrEmpty())
-                adm.ParserErrors.AddItem(lineNumber, string.Format("Patient lastname is a required field on position 3: '{0}'", string.Join("\\", recordParts)));
+                adm.ParserErrors.AddItem(lineNumber, $"Patient lastname is a required field on position 3: '{string.Join("\\", recordParts)}'");
             adm.Patient.LastName = recordParts.ElementAtOrDefault(2);
             if (recordParts.ElementAtOrDefault(3).IsNullOrEmpty())
-                adm.ParserErrors.AddItem(lineNumber, string.Format("Patient firstname is a required field on position 4: '{0}'", string.Join("\\", recordParts)));
+                adm.ParserErrors.AddItem(lineNumber, $"Patient firstname is a required field on position 4: '{string.Join("\\", recordParts)}'");
             adm.Patient.FirstName = recordParts.ElementAtOrDefault(3);
             if (recordParts.ElementAtOrDefault(4).IsNullOrEmpty())
-                adm.ParserErrors.AddItem(lineNumber, string.Format("Patient sex is a required field on position 5: '{0}'", string.Join("\\", recordParts)));
-            adm.Patient.Sex = recordParts.ElementAtOrDefault(4).Maybe(s =>
+                adm.ParserErrors.AddItem(lineNumber, $"Patient sex is a required field on position 5: '{string.Join("\\", recordParts)}'");
+            switch (recordParts.ElementAtOrDefault(4))
             {
-                switch (s)
-                {
-                    case "F":
-                    case "V":
-                        return Sex.Female;
-                    case "M":
-                        return Sex.Male;
-                    default:
-                        return Sex.Unknown;
-                }
-            });
+                case "F":
+                case "V":
+                    adm.Patient.Sex = Sex.Female;
+                    break;
+                case "M":
+                    adm.Patient.Sex = Sex.Male;
+                    break;
+                default:
+                    adm.Patient.Sex = Sex.Unknown;
+                    break;
+            }
             if (recordParts.ElementAtOrDefault(5).IsNullOrEmpty())
-                adm.ParserErrors.AddItem(lineNumber, string.Format("Patient birthdate is  a required field on position 6: '{0}'", string.Join("\\", recordParts)));
-            adm.Patient.BirthDate = recordParts.ElementAtOrDefault(5).Maybe(s => s.ToNullableDatetime("ddMMyyyy"));
+                adm.ParserErrors.AddItem(lineNumber, $"Patient birthdate is  a required field on position 6: '{string.Join("\\", recordParts)}'");
+            adm.Patient.BirthDate = recordParts.ElementAtOrDefault(5)?.ToNullableDatetime("ddMMyyyy");
         }
 
         static void ParseAdministrative3(IList<string> recordParts, IAdministrative adm, int lineNumber)
         {
             if (recordParts.Count != 6 || !recordParts[5].IsNullOrEmpty())
-                adm.ParserErrors.AddItem(lineNumber, string.Format("Expected 5 parts in A3 but got {0} parts: '{1}'", recordParts.Count - 1, string.Join("\\", recordParts)));
+                adm.ParserErrors.AddItem(lineNumber, $"Expected 5 parts in A3 but got {recordParts.Count - 1} parts: '{string.Join("\\", recordParts)}'");
 
             if (adm.Patient == null)
                 adm.Patient = new Patient();
@@ -261,37 +261,39 @@ namespace HealthOneParser
         static void ParseAdministrative4(IList<string> recordParts, IAdministrative adm, int lineNumber)
         {
             if (recordParts.Count != 7 || !recordParts[6].IsNullOrEmpty())
-                adm.ParserErrors.AddItem(lineNumber, string.Format("Expected 6 parts in A4 but got {0} parts: '{1}'", recordParts.Count - 1, string.Join("\\", recordParts)));
+                adm.ParserErrors.AddItem(lineNumber, $"Expected 6 parts in A4 but got {recordParts.Count - 1} parts: '{string.Join("\\", recordParts)}'");
 
             adm.RequestorId = recordParts.ElementAtOrDefault(2);
             if (recordParts.ElementAtOrDefault(3).IsNullOrEmpty())
-                adm.ParserErrors.AddItem(lineNumber, string.Format("Request date is a required field on position 4: '{0}'", string.Join("\\", recordParts)));
-            adm.RequestDate = (recordParts.ElementAtOrDefault(3)).Maybe(v =>
+                adm.ParserErrors.AddItem(lineNumber, $"Request date is a required field on position 4: '{string.Join("\\", recordParts)}'");
+
+            adm.RequestDate = recordParts.ElementAtOrDefault(3)?.ToNullableDatetime("ddMMyyyy");
+            if (adm.RequestDate.HasValue)
             {
-                var date = v.ToNullableDatetime("ddMMyyyy");
-                DateTime? time = (recordParts.ElementAtOrDefault(4)).Maybe(vt => vt.ToNullableDatetime("HHmm"));
-                return date.HasValue ? (time.HasValue ? date.Value.Add(time.Value.TimeOfDay) : date) : null;
-            });
+                var time = recordParts.ElementAtOrDefault(4)?.ToNullableDatetime("HHmm");
+                if (time.HasValue)
+                    adm.RequestDate.Value.Add(time.Value.TimeOfDay);
+            }
             if (recordParts.ElementAtOrDefault(5).IsNullOrEmpty())
-                adm.ParserErrors.AddItem(lineNumber, string.Format("Protocol status is a required field on position 6: '{0}'", string.Join("\\", recordParts)));
-            adm.Status = recordParts.ElementAtOrDefault(5).Maybe(s =>
+                adm.ParserErrors.AddItem(lineNumber, $"Protocol status is a required field on position 6: '{string.Join("\\", recordParts)}'");
+            switch (recordParts.ElementAtOrDefault(5))
             {
-                switch (s)
-                {
-                    case "P":
-                        return ProtocolStatus.Partial;
-                    case "C":
-                        return ProtocolStatus.Complete;
-                    default:
-                        return ProtocolStatus.Unknown;
-                }
-            });
+                case "P":
+                    adm.Status = ProtocolStatus.Partial;
+                    break;
+                case "C":
+                    adm.Status = ProtocolStatus.Complete;
+                    break;
+                default:
+                    adm.Status = ProtocolStatus.Unknown;
+                    break;
+            }
         }
 
         static void ParseAdministrative5(IList<string> recordParts, IAdministrative adm, int lineNumber)
         {
             if (recordParts.Count != 8 || !recordParts[7].IsNullOrEmpty())
-                adm.ParserErrors.AddItem(lineNumber, string.Format("Expected 8 parts in A5 but got {0} parts: '{1}'", recordParts.Count - 1, string.Join("\\", recordParts)));
+                adm.ParserErrors.AddItem(lineNumber, $"Expected 8 parts in A5 but got {recordParts.Count - 1} parts: '{string.Join("\\", recordParts)}'");
 
             if (adm.Mutuality == null)
                 adm.Mutuality = new Mutuality();
