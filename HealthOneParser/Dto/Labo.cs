@@ -11,6 +11,8 @@ namespace HealthOneParser.Dto
         public Labo()
         {
             Results = new List<LaboResult>();
+
+            ParserErrors = new Dictionary<int, IList<string>>();
         }
 
         public string ProtocolNumber { get; set; }
@@ -22,5 +24,7 @@ namespace HealthOneParser.Dto
         public Mutuality Mutuality { get; set; }
 
         public IList<LaboResult> Results { get; set; }
+
+        public IDictionary<int, IList<string>> ParserErrors { get; set; }
     }
 }

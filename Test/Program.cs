@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using HealthOneParser;
 using Newtonsoft.Json;
 
@@ -12,8 +8,6 @@ namespace Test
     {
         static void Main(string[] args)
         {
-            var parser = new Parser();
-
             var text = @"A1\4848289\URO_M+R\
 A2\4848289\DELAMILLIEURE\RONNY\M\18091966\
 A3\4848289\Gentsesteenweg 208 \8650\HOUTHULST\
@@ -54,8 +48,9 @@ L5\4848289\URO_M+R\\\\\\
 L5\4848289\URO_M+R\\\\\\
 ";
 
-            var letters = parser.ParseReport(text);
-            foreach (var parserError in parser.ParserErrors)
+            var letters = Parser.ParseReport(text);
+            foreach (var letter in letters)
+                foreach (var parserError in letter.ParserErrors)
                 Console.WriteLine("error on line {0}: {1}", parserError.Key, string.Join(Environment.NewLine, parserError.Value));
             Console.WriteLine("Press enter to view result");
             Console.ReadLine();

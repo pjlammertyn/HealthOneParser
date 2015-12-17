@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+
 namespace HealthOneParser.Dto
 {
     interface IAdministrative
@@ -10,5 +12,7 @@ namespace HealthOneParser.Dto
         DateTime? RequestDate { get; set; }
         string RequestorId { get; set; }
         ProtocolStatus Status { get; set; }
+
+        IDictionary<int, IList<string>> ParserErrors { get; set; }
     }
 }

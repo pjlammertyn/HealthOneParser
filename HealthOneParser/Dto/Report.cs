@@ -6,8 +6,13 @@ using System.Threading.Tasks;
 
 namespace HealthOneParser.Dto
 {
-    public class Report: IAdministrative
+    public class Report : IAdministrative
     {
+        public Report()
+        {
+            ParserErrors = new Dictionary<int, IList<string>>();
+        }
+
         public string ProtocolNumber { get; set; }
         public string Identification { get; set; }
         public Patient Patient { get; set; }
@@ -18,5 +23,7 @@ namespace HealthOneParser.Dto
 
         public string Speciality { get; set; }
         public string Text { get; set; }
+
+        public IDictionary<int, IList<string>> ParserErrors { get; set; }
     }
 }
